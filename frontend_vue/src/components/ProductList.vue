@@ -1,4 +1,8 @@
 <template>
+    <nav>
+    <router-link to="/products">Products</router-link> |
+    <router-link to="/user">User</router-link>
+  </nav>
   <div class="ProductList">
     <h2>Product List</h2>
     <button class="btn btn-primary add-user-button m-2" @click="addProduct()">Add Product</button>
@@ -98,21 +102,17 @@
       </template>
     </Modal>
 
-    <ViewModal v-if="showViewModal" :product="viewProductData" @close="showViewModal = false" />
-
   </div>
 </template>
 
 <script>
 import Modal from './EditModal.vue';
-import ViewModal from './ViewModal.vue';
 import axios from 'axios';
 
 export default {
   name: 'ProductList',
   components: {
-    Modal,
-    ViewModal
+    Modal
   },
   data() {
     return {

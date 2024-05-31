@@ -1,4 +1,8 @@
 <template>
+    <nav>
+    <router-link to="/products">Products</router-link> |
+    <router-link to="/user">User</router-link>
+  </nav>
   <div class="UserList">
     <h2>User List</h2>
     <button class="btn btn-primary add-user-button m-2" @click="addUser()">Add User</button>
