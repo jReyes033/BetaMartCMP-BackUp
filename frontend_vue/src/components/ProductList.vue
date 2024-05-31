@@ -150,8 +150,7 @@ export default {
   methods: {
     async postProduct() {
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/products', this.newProductData);
-        this.products.products.push(response.data);
+        await axios.post('http://127.0.0.1:8000/api/products', this.newProductData);
         this.showAddModal = false;
       } catch (error) {
         console.error('There was an error adding the product:', error);
@@ -165,6 +164,13 @@ export default {
           'Content-Type': 'application/json',
         },
       })
+        .then(response => response.json())
+        .then(data => {
+          this.products = data;
+        })
+        .catch(error => {
+          console.error('Error fetching products:', error);
+        });
     },
     addProduct() {
       this.showAddModal = true;
@@ -176,7 +182,7 @@ export default {
     async saveProduct() {
       try {
         // Make the API call to save the product data
-      await axios.put(`http://127.0.0.1:8000/api/products/${this.editProductData.id}/edit`, this.editProductData);
+        await axios.put(`http://127.0.0.1:8000/api/products/${this.editProductData.id}/edit`, this.editProductData);
 
         // Hide the edit modal
         this.showEditModal = false;
@@ -216,10 +222,10 @@ export default {
       if (product.quantity > 0) {
         product.quantity--;
         try {
-        await axios.put(`http://127.0.0.1:8000/api/products/${product.id}/edit`, product);
-      } catch (error) {
-        console.error('There was an error increasing the product quantity', error);
-      }
+          await axios.put(`http://127.0.0.1:8000/api/products/${product.id}/edit`, product);
+        } catch (error) {
+          console.error('There was an error increasing the product quantity', error);
+        }
       }
     }
   }
@@ -245,10 +251,12 @@ export default {
   border-collapse: collapse;
 }
 
-.table thead th, .table tbody td {
+.table thead th,
+.table tbody td {
   text-align: center;
   vertical-align: middle;
-  border: 1px solid black; /* Adding black grid lines */
+  border: 1px solid black;
+  /* Adding black grid lines */
 }
 
 .table tbody tr:hover {

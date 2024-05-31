@@ -131,7 +131,13 @@ export default {
         headers: {
           'Content-Type': 'application/json',
         },
-      })
+      }).then(response => response.json())
+        .then(data => {
+          this.accounts = data.account;
+        })
+        .catch(error => {
+          console.error('Error fetching accounts:', error);
+        });
     },
     editAccount(account) {
       this.editAccountData = { ...account };
@@ -143,7 +149,13 @@ export default {
         this.showEditModal = false;
         this.fetchAccounts();
       } catch (error) {
-        console.error('There was an error saving the account:', error);
+        if (error.response && error.response.status === 500) {
+          alert('Email already taken.');
+        } else if (error.response && error.response.status === 400) {
+          alert(error.response.request.response);
+        } else {
+          console.error('There was an error adding the account:', error);
+        }
       }
     },
     confirmDeleteUser(account) {
